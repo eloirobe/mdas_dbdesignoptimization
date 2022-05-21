@@ -9,9 +9,12 @@ services:
     command: --default-authentication-plugin=mysql_native_password --local-infile=ON
     restart: always
     environment:
+      MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: example
     volumes:
       - ./datadir:/opt/datadir
+    ports:
+      - 3306:3306
 
   adminer:
     image: adminer

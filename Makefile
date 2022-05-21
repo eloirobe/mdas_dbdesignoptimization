@@ -38,5 +38,9 @@ load-world-db: ## Load World db
 	docker compose exec -w /opt/datadir/ db sh -c 'tar xvzf world_x-db.tar.gz'
 	docker compose exec -w /opt/datadir/ db sh -c 'mysql -uroot  -p$$MYSQL_ROOT_PASSWORD < /opt/datadir/world_x-db/world_x.sql '
 
+load-flights-db: ## Load Flights db
+	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop flightdb2 || true'
+	docker compose exec -w /opt/datadir/ db sh -c 'gunzip < /opt/datadir/dumpflightdb2.sql.gz  | mysql -uroot  -p$$MYSQL_ROOT_PASSWORD'
+
 bash: ## Enter commandline
 	docker compose exec db bash
