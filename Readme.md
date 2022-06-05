@@ -27,3 +27,25 @@ Usuario: root
 
 Contraseña: example
 
+
+## Usuarios Windows
+
+Para hacer funcionar el Makefile es recomendable instalarse una distribución linux con el wsl , estos son los pasos:
+
+```bash
+ wsl --set-default-version 2
+
+ wsl --install -d Ubuntu
+ ```
+ 
+ Depues activar la integración con docker en Docker Desktop Settings -> Resources -> wsl integration y activar ubuntu
+
+
+ Abrir terminal ubuntu e instalar make con:
+``` 
+sudo apt-get install make
+```
+
+Acceder al directorio donde este descargado el repositorio dentro de la terminal de ubuntu. Hay que ir a /mnt/c para acceder al disco de windows e ir al directorio donde se encuentra el repo descargado.
+
+Ojo es posible que haya que ejecutar con sudo los comandos de make

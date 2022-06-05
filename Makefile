@@ -16,21 +16,21 @@ down: ## Down all container
 clean: ## Down and clean colume
 	docker compose down -v 
 
-load-emoloyees-db: ## Load employees db
+load-emoloyees-db: ## Drop and Load employees db
 	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop employees || true'
 	docker compose exec db sh -c 'rm -fr /opt/datadir/employees-db'
 	docker compose exec db sh -c 'mkdir -p /opt/datadir/employees-db'
 	docker compose exec -w /opt/datadir/employees-db/ db sh -c 'git clone https://github.com/datacharmer/test_db.git' 
 	docker compose exec -w /opt/datadir/employees-db/test_db/ db sh -c 'mysql -uroot  -p$$MYSQL_ROOT_PASSWORD < /opt/datadir/employees-db/test_db/employees.sql'
 
-load-airport-db: ## Load airport db
+load-airport-db: ## Drop and Load airport db
 	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop airportdb || true'
 	docker compose exec db sh -c ' rm -fr /opt/datadir/airport-db'
 	docker compose exec -w /opt/datadir/ db sh -c 'wget -O airport-db.tar.gz "https://lasalleuniversities-my.sharepoint.com/:u:/g/personal/eloi_rocamora_salle_url_edu/EYwebJSSe6tLiw9ortPoX0EBcsebHr-LtPYPtsAFLSIkLg?e=hffBGF&download=1"'
 	docker compose exec -w /opt/datadir/ db sh -c 'tar xvzf airport-db.tar.gz'
 	docker compose exec -w /opt/datadir/ db sh -c 'mysqlsh root@localhost -p$$MYSQL_ROOT_PASSWORD -- util load-dump /opt/datadir/airport-db --defer-table-indexes=all --ignore-version=true'
 
-load-world-db: ## Load World db
+load-world-db: ## Drop and Load World db
 	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop world_x || true'
 	docker compose exec db sh -c ' rm -fr /opt/datadir/world_x-db'
 	docker compose exec db sh -c ' rm -fr /opt/datadir/world_x-db.tar.gz'
@@ -38,9 +38,17 @@ load-world-db: ## Load World db
 	docker compose exec -w /opt/datadir/ db sh -c 'tar xvzf world_x-db.tar.gz'
 	docker compose exec -w /opt/datadir/ db sh -c 'mysql -uroot  -p$$MYSQL_ROOT_PASSWORD < /opt/datadir/world_x-db/world_x.sql '
 
-load-flights-db: ## Load Flights db
+load-flights-db: ## Drop and Load Flights db
 	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop flightdb2 || true'
 	docker compose exec -w /opt/datadir/ db sh -c 'gunzip < /opt/datadir/dumpflightdb2.sql.gz  | mysql -uroot  -p$$MYSQL_ROOT_PASSWORD'
+
+load-sakila-db: ## Drop and Load Sakila db
+	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop saquila || true'
+	docker compose exec -w /opt/datadir/ db sh -c 'gunzip < /opt/datadir/sakila-db.sql.gz  | mysql -uroot  -p$$MYSQL_ROOT_PASSWORD'
+
+load-taxonomic-db: ## Drop and Load Taxonomic DB
+	docker compose exec db sh -c 'mysqladmin -f -s  -u root -p$$MYSQL_ROOT_PASSWORD drop taxonomic || true'
+	docker compose exec -w /opt/datadir/ db sh -c 'gunzip < /opt/datadir/taxonomic_units.sql.gz  | mysql -uroot  -p$$MYSQL_ROOT_PASSWORD'
 
 bash: ## Enter commandline
 	docker compose exec db bash
