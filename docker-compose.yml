@@ -13,6 +13,7 @@ services:
       MYSQL_ROOT_PASSWORD: example
     volumes:
       - ./datadir:/opt/datadir
+      - ./config/custom-config.cnf:/etc/mysql/conf.d/custom-config.cnf
     ports:
       - 3306:3306
 
